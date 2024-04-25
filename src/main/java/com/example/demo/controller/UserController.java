@@ -2,52 +2,67 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping("/users")
+    @GetMapping("/user-list")
     public String findAll(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userService.findByUsername(auth.getName());
+        model.addAttribute("allRoles", userService.findAllRoles());
+        if (!model.containsAttribute("user")) {
+            model.addAttribute("user", new User());
+        }
+        model.addAttribute("userAuth",user);
+        model.addAttribute("showUserProfile",
+                model.containsAttribute("user") && ((User) Objects.requireNonNull(model.getAttribute("user"))).getId() == null);
+        model.addAttribute("showNewUserForm",
+                model.containsAttribute("user") && ((User) Objects.requireNonNull(model.getAttribute("user"))).getId() != null);
+
+        if (user.isEmpty()) System.out.println("User is null");
+
+
+
         List<User> users = userService.findAll();
-        model.addAttribute("users", users);
+//        model.addAttribute("users", users);
         return "user-list";
     }
-    @GetMapping("/user-create")
-    public String createUserForm(User user) {
-        return "user-create";
+
+    @GetMapping("/{id}/profile")
+    public String showUserProfileModal(@PathVariable("id") Long userId, Model model, RedirectAttributes attributes) {
+        try {
+            model.addAttribute("allRoles", userService.findAllRoles());
+            model.addAttribute("user", userService.findById(userId));
+            return "fragments/user-form";
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
-    @PostMapping("/user-create")
-    public String createUser(User user) {
-        userService.saveUser(user);
-        return "redirect:/users";
-    }
-    @GetMapping("/user-delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id){
-        userService.deleteById(id);
-        return "redirect:/users";
-    }
-    @GetMapping("/user-update/{id}")
-    public String updateUserForm(@PathVariable("id") Long id, Model model) {
-        User user = userService.findById(id);
-        model.addAttribute("user", user);
-        return "/user-update";
-    }
-    @PostMapping("/user-update")
-    public String updateUser(User user) {
-        userService.saveUser(user);
-        return "redirect:/users";
-    }
+
+//    @PatchMapping()
+//    public String updateUser( @ModelAttribute("user") User user) {
+//        userService.saveUser(user);
+//
+//        return "redirect:/user-list";
+//    }
 }

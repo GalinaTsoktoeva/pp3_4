@@ -1,0 +1,27 @@
+<div class="container col-6 form-group text-center">
+    <form role="form" id="user-add" th:action="@{/registration}" th:method="post" th:object="${user}">
+<!--        <form action="#" th:action="@{/admin/user-create}" th:object="${user}"-->
+<!--              method="POST">-->
+            <input type="text" th:field="*{firstname}"
+                   placeholder="User Name" class="form-control mb-4 col-4">
+
+            <input type="text" th:field="*{lastname}"
+                   placeholder="Last Name" class="form-control mb-4 col-4">
+
+            <input type="text" th:field="*{email}"
+                   placeholder="Course Email" class="form-control mb-4 col-4">
+
+            <input type="text" th:field="*{username}"
+                   placeholder="username" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{password}"
+                   placeholder="password" class="form-control mb-4 col-4">
+        <label for="newRoles">Role</label>
+        <select multiple class="form-control" id="newRoles" name="roles">
+            <option th:each="role : ${allRoles}"
+                    th:value="${role.id}">
+        </select>
+
+            <button type="submit" class="btn btn-info col-2"> Save User</button>
+
+    </form>
+</div>

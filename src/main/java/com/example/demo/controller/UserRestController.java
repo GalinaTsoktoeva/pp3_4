@@ -60,11 +60,11 @@ public class UserRestController {
         }
     }
 
-    @PatchMapping()
-    public String updateUser( @ModelAttribute("user") User user) {
+    @PatchMapping("/user-update")
+    public ResponseEntity<?> updateUser( @RequestParam("user") User user) {
         userService.saveUser(user);
 
-        return "redirect:/admin/user-list";
+        return new ResponseEntity<>("user updated", HttpStatus.OK);
     }
 //    @GetMapping("/user-create")
 //    public String createUserForm(User user) {

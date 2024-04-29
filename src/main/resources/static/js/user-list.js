@@ -9,7 +9,7 @@ for (let key in data) {
     btnEdit.textContent="Edit"
     btnEdit.title = "Edit";
     let id = data[key].id;
-    btnEdit.href = 'http://localhost:8080/'+id+'/profile';
+    btnEdit.href = 'http://localhost:8080/'+id+'/profile?id='+id+'&action=edit';
     btnEdit.classList.add("btn-sm")
     btnEdit.classList.add("btn-info")
     btnEdit.classList.add("edit-button")
@@ -19,7 +19,7 @@ for (let key in data) {
     btnDelete.textContent="Delete"
     btnDelete.title = "Delete";
     let idD = data[key].id;
-    btnDelete.href = 'http://localhost:8080/'+idD+'/profile';
+    btnDelete.href = 'http://localhost:8080/'+idD+'/profile?id='+idD+'&action=delete';
     btnDelete.classList.add("btn-sm")
     btnDelete.classList.add("btn-danger")
     btnDelete.classList.add("delete-button")
@@ -43,5 +43,21 @@ for (let key in data) {
 
     document.querySelector('.table').appendChild(row)
 }})
+
+document.getElementById("nav-user_form-link").addEventListener("click", function () {
+    document.getElementById("nav-users_table").classList.remove("show", "active")
+    document.getElementById("nav-users_table-link").classList.remove("active")
+    document.getElementById("nav-user_form").classList.add("show", "active")
+    document.getElementById("nav-user_form-link").classList.add("active")
+})
+
+document.getElementById("nav-users_table-link").addEventListener("click", function () {
+    document.getElementById("nav-user_form-link").classList.remove("active")
+    document.getElementById("nav-user_form").classList.remove("show", "active")
+    document.getElementById("nav-users_table").classList.add("show", "active")
+    document.getElementById("nav-users_table-link").classList.add("active")
+
+})
+
 
 // console.log(data[key].sizes[key2].name);

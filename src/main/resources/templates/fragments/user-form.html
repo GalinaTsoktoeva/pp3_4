@@ -1,7 +1,7 @@
 <head>
 <!--    <link href="/css/bootstrap.min.css" rel="stylesheet">-->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <title>Delete or edit user</title>
+<!--    <title>Delete or edit user</title>-->
 
 </head>
 <style>
@@ -37,16 +37,21 @@
 <div id="my-modal" data-modal-window="myModal" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
-            <h3 class="modal-title">Edit user</h3>
+            <th:block th:if="${action == 'edit'}">
+                <h3 id="modal-head" class="modal-title">Edit user</h3>
+            </th:block>
+            <th:block th:if="${action == 'delete'}">
+                <h3 id="modal-head2" class="modal-title">Delete user</h3>
+            </th:block>
             <button id="close-btn" type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form role="form" id="userprofile-form" th:action="@{/user-list}" th:method="post" th:object="${user}">
+        <form role="form" id="userprofile-form" action="/user-update" th:object="${user}">
             <div class="modal-body">
                 <div class="container col-6 text-center">
                     <div class="form-group text-center">
-                        <input id="method" type="hidden" name="_method" value="post">
+<!--                        <input id="method" type="hidden" name="_method" value="post">-->
                         <div>
                             <label for="id">ID</label>
                             <input type="text" class="form-control" th:field="*{id}" id="id" readonly>
@@ -54,13 +59,8 @@
                         <div>
                             <label for="firstName">First name</label>
                             <input type="text" class="form-control"
-                                   th:classappend="${bindingResult} and ${bindingResult.hasFieldErrors('firstname')} ? 'is-invalid'"
                                    th:field="*{firstname}" id="firstName">
-                            <th:block th:if="${bindingResult} and ${bindingResult.hasFieldErrors('firstName')}">
-                                <div class="invalid-feedback"
-                                     th:each="error : ${bindingResult.getFieldErrors('firstName')}"
-                                     th:text="${error.getDefaultMessage()}"/>
-                            </th:block>
+
                         </div>
                         <div>
                             <label for="lastName">Last name</label>
@@ -70,12 +70,8 @@
                         <div>
                             <label for="email">E-mail</label>
                             <input type="text" class="form-control"
-                                   th:classappend="${bindingResult} and ${bindingResult.hasFieldErrors('email')} ? 'is-invalid'"
                                    th:field="*{email}" id="email" autocomplete="username">
-                            <th:block th:if="${bindingResult} and ${bindingResult.hasFieldErrors('email')}">
-                                <div class="invalid-feedback" th:each="error : ${bindingResult.getFieldErrors('email')}"
-                                     th:text="${error.getDefaultMessage()}"/>
-                            </th:block>
+
                         </div>
                         <div id="password-div">
                             <label for="password">Password</label>
@@ -94,10 +90,64 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button  id="close-footer" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="submit" type="submit" class="btn submit">Save</button>
+                <button id="close-footer" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <th:block th:if="${action == 'edit'}">
+                    <!-- Если параметр 'action' присутствует, выводим кнопку типа button -->
+                    <button id="save" class="btn submit bg-primary">Save</button>
+                </th:block>
+
+                <th:block th:if="${action == 'delete'}">
+                    <button  id="submit2" type="submit" class="btn bg-danger">Delete
+                    </button>
+                </th:block>
             </div>
         </form>
     </div>
-    <script src="/js/app.js"></script>
+    <script src="/js/app.js">
+        // function save() {
+            // const formElement = document.getElementById('userprofile-form');
+            // const data1 = {};
+            //
+            // for (const element of formElement) {
+            //     if (element.name) {
+            //         // if (element.name === "firstname") {
+            //         //     data1["name"] = element.value
+            //         // } else {
+            //         //     if (!(element.name === 'roles')) {
+            //         //         // console.log(element.name)
+            //         //         // console.log(element.value)
+            //                 data1[element.name] = element.value;
+            //         //     }
+            //         // }
+            //     }
+            // }
+            // // data1["confirmPassword"] = data1["password"]
+            // console.log(data1)
+            // const searchParams = JSON.stringify(data1);
+        //     const searchParams = JSON.stringify({});
+        //     fetch('http://localhost:8080/user-update', {
+        //         method: 'PATCH',
+        //         body: {"user": searchParams},
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //     })
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             return response.json();
+        //         })
+        //         .then(data => {
+        //             console.log('Данные успешно отправлены:', data1);
+        //             // Здесь вы можете обработать ответ от сервера
+        //         })
+        //         .catch(error => {
+        //             console.error('There was an error!', error);
+        //             // Здесь вы можете обработать ошибку
+        //         });
+        //
+        //
+        // }
+    </script>
 </div>

@@ -9,10 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -41,23 +38,23 @@ public class UserController {
 
         if (user.isEmpty()) System.out.println("User is null");
 
-
-
         List<User> users = userService.findAll();
 //        model.addAttribute("users", users);
         return "user-list";
     }
 
     @GetMapping("/{id}/profile")
-    public String showUserProfileModal(@PathVariable("id") Long userId, Model model, RedirectAttributes attributes) {
+    public String showUserProfileModal(@PathVariable("id") Long userId, @RequestParam(name = "action") String action, Model model) {
         try {
             model.addAttribute("allRoles", userService.findAllRoles());
             model.addAttribute("user", userService.findById(userId));
+            model.addAttribute("action", action);
             return "fragments/user-form";
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage(), e);
         }
     }
+
 
 //    @PatchMapping()
 //    public String updateUser( @ModelAttribute("user") User user) {

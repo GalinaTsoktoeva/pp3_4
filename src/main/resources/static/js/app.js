@@ -11,9 +11,58 @@ document.getElementById("close-footer").addEventListener("click", function () {
 
 })
 
-document.getElementById("submit").addEventListener("click", function (){
+document.getElementById("save").addEventListener("click", function () {
+    const formElement = document.getElementById('userprofile-form');
+    const data1 = {};
+
+    for (const element of formElement) {
+        if (element.name) {
+            // if (element.name === "firstname") {
+            //     data1["name"] = element.value
+            // } else {
+            //     if (!(element.name === 'roles')) {
+            //         // console.log(element.name)
+            //         // console.log(element.value)
+                    data1[element.name] = element.value;
+            //     }
+            // }
+        }
+    }
+    // data1["confirmPassword"] = data1["password"]
+    console.log(data1)
+    const searchParams = JSON.stringify(data1);
+
+    fetch('http://localhost:8080/user-update', {
+                method: 'PATCH',
+                body: {"user": searchParams},
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Данные успешно отправлены:', data1);
+            // Здесь вы можете обработать ответ от сервера
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+            // Здесь вы можете обработать ошибку
+        });
 
 })
+// document.getElementById("save").addEventListener("click", function (){
+//     fetch("http://localhost:8080/admin/users",
+//         {
+//             method: "PATCH",
+//         }
+//
+//     )
+// })
 
 // $(document).ready(function () {
 //     $('.edit-button').on('click', function (event) {

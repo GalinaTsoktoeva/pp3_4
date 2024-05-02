@@ -1,7 +1,7 @@
 <head>
-<!--    <link href="/css/bootstrap.min.css" rel="stylesheet">-->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-<!--    <title>Delete or edit user</title>-->
+    <!--    <link href="/css/bootstrap.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!--    <title>Delete or edit user</title>-->
 
 </head>
 <style>
@@ -30,6 +30,7 @@
         height: 100vh;
         width: 100%;
     }
+
     .modal-overlay.close {
         display: none;
     }
@@ -47,11 +48,11 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <form role="form" id="userprofile-form" action="/user-update" th:object="${user}">
+        <form role="form" id="userprofile-form" th:object="${user}">
             <div class="modal-body">
                 <div class="container col-6 text-center">
                     <div class="form-group text-center">
-<!--                        <input id="method" type="hidden" name="_method" value="post">-->
+                        <!--                        <input id="method" type="hidden" name="_method" value="post">-->
                         <div>
                             <label for="id">ID</label>
                             <input type="text" class="form-control" th:field="*{id}" id="id" readonly>
@@ -73,17 +74,23 @@
                                    th:field="*{email}" id="email" autocomplete="username">
 
                         </div>
+                        <div id="username-div">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" th:field="*{username}"
+                                   autocomplete="current-username">
+                        </div>
                         <div id="password-div">
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password"
                                    autocomplete="current-password">
                         </div>
                         <div>
-                            <label for="roles">Role</label>
-                            <select multiple class="form-control" id="roles" name="roles">
+                            <label for="roles-select">Role</label>
+                            <select multiple class="form-control" id="roles-select" name="roles">
                                 <option th:each="role : ${allRoles}"
-                                        th:selected="${role.id}" th:text="${role.name}"
+                                        th:text="${role.name}"
                                         th:value="${role.name}">
+
                             </select>
                         </div>
                     </div>
@@ -93,61 +100,18 @@
                 <button id="close-footer" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <th:block th:if="${action == 'edit'}">
                     <!-- Если параметр 'action' присутствует, выводим кнопку типа button -->
-                    <button id="save" class="btn submit bg-primary">Save</button>
+                    <button id="save" type="button" onclick="saveUser()" class="btn bg-primary">Save</button>
                 </th:block>
 
                 <th:block th:if="${action == 'delete'}">
-                    <button  id="submit2" type="submit" class="btn bg-danger">Delete
+                    <button id="delete-btn" type="button" onclick="deleteUser()" class="btn btn-danger">Delete
                     </button>
                 </th:block>
             </div>
         </form>
     </div>
     <script src="/js/app.js">
-        // function save() {
-            // const formElement = document.getElementById('userprofile-form');
-            // const data1 = {};
-            //
-            // for (const element of formElement) {
-            //     if (element.name) {
-            //         // if (element.name === "firstname") {
-            //         //     data1["name"] = element.value
-            //         // } else {
-            //         //     if (!(element.name === 'roles')) {
-            //         //         // console.log(element.name)
-            //         //         // console.log(element.value)
-            //                 data1[element.name] = element.value;
-            //         //     }
-            //         // }
-            //     }
-            // }
-            // // data1["confirmPassword"] = data1["password"]
-            // console.log(data1)
-            // const searchParams = JSON.stringify(data1);
-        //     const searchParams = JSON.stringify({});
-        //     fetch('http://localhost:8080/user-update', {
-        //         method: 'PATCH',
-        //         body: {"user": searchParams},
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //     })
-        //         .then(response => {
-        //             if (!response.ok) {
-        //                 throw new Error('Network response was not ok');
-        //             }
-        //             return response.json();
-        //         })
-        //         .then(data => {
-        //             console.log('Данные успешно отправлены:', data1);
-        //             // Здесь вы можете обработать ответ от сервера
-        //         })
-        //         .catch(error => {
-        //             console.error('There was an error!', error);
-        //             // Здесь вы можете обработать ошибку
-        //         });
-        //
-        //
-        // }
+
+
     </script>
 </div>

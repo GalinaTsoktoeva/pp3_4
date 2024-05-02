@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.RegistrationUserDto;
+import com.example.demo.dto.UserDto;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.RoleRepository;
@@ -74,5 +75,47 @@ public class UserService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
         user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
         return userRepository.save(user);
+    }
+
+    public User updateUser(UserDto userDto) {
+        User user = findById(userDto.getId());
+
+        if (userDto.getName() != null && !userDto.getName().equals(user.getFirstname())) {
+            user.setFirstname(userDto.getName());
+        }
+        if (userDto.getLastname() != null && !userDto.getLastname().equals(user.getLastname())) {
+            user.setLastname(userDto.getLastname());
+        }
+        if (userDto.getUsername() != null && !userDto.getUsername().equals(user.getUsername())) {
+            user.setUsername(userDto.getUsername());
+        }
+        if (userDto.getEmail() != null && !userDto.getEmail().equals(user.getEmail())) {
+            user.setEmail(userDto.getEmail());
+        }
+        if (userDto.getRoles() != null) {
+            addMissingRoles(user, userDto.getRoles());
+        }
+
+        if (user.getPassword() != null && !user.getPassword().equals(userDto.getPassword())) {
+            if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+            }
+        }
+
+
+//        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+//            user.setRoles(List.of(roleRepository.findByName(userDto.getRoles())));
+            return userRepository.save(user);
+
+    }
+
+    public void addMissingRoles(User user, Collection<Role> checkRoles) {
+        Collection<Role> roles = user.getRoles();
+        for (Role role : checkRoles) {
+            if (!roles.contains(role)) {
+                Optional<Role> current_role = roleRepository.findByName(role.getName());
+                user.getRoles().add(current_role.get());
+            }
+        }
     }
 }

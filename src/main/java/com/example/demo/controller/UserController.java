@@ -5,6 +5,7 @@ import com.example.demo.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ import java.util.Optional;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/user-list")
+    @GetMapping("/admin/user-list")
     public String findAll(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Optional<User> user = userService.findByUsername(auth.getName());
@@ -31,19 +32,15 @@ public class UserController {
             model.addAttribute("user", new User());
         }
         model.addAttribute("userAuth",user);
-        model.addAttribute("showUserProfile",
-                model.containsAttribute("user") && ((User) Objects.requireNonNull(model.getAttribute("user"))).getId() == null);
-        model.addAttribute("showNewUserForm",
-                model.containsAttribute("user") && ((User) Objects.requireNonNull(model.getAttribute("user"))).getId() != null);
 
         if (user.isEmpty()) System.out.println("User is null");
 
         List<User> users = userService.findAll();
-//        model.addAttribute("users", users);
+
         return "user-list";
     }
 
-    @GetMapping("/{id}/profile")
+    @GetMapping("/admin/{id}/profile")
     public String showUserProfileModal(@PathVariable("id") Long userId, @RequestParam(name = "action") String action, Model model) {
         try {
             model.addAttribute("allRoles", userService.findAllRoles());
@@ -55,11 +52,12 @@ public class UserController {
         }
     }
 
-
-//    @PatchMapping()
-//    public String updateUser( @ModelAttribute("user") User user) {
-//        userService.saveUser(user);
-//
-//        return "redirect:/user-list";
-//    }
+    @GetMapping("/user-info")
+    public String userInfo(@CurrentSecurityContext(expression = "authentication.principal") User principal, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findByUsername(auth.getName()).get();
+        model.addAttribute("user", user);
+//        model.addAttribute("allRoles", userService.findAllRoles());
+        return "fragments/user-info";
+    }
 }

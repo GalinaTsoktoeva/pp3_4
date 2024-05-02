@@ -20,9 +20,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         AuthenticationSuccessHandler.super.onAuthenticationSuccess(request, response, chain, authentication);
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         if (roles.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/user-list");
+            response.sendRedirect("/admin/user-list");
         } else if (roles.contains("ROLE_USER")) {
-            response.sendRedirect("/user-info");
+            response.sendRedirect("/admin/user-info");
         }
     }
 
@@ -30,7 +30,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
         if (roles.contains("ROLE_ADMIN")) {
-            response.sendRedirect("/user-list");
+            response.sendRedirect("/admin/user-list");
         } else if (roles.contains("ROLE_USER")) {
             response.sendRedirect("/user-info");
         }

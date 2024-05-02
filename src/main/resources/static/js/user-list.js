@@ -1,3 +1,4 @@
+// let token = fetch("auth")
 
 let data = fetch("http://localhost:8080/admin/users")
 .then(res => res.json())
@@ -9,17 +10,17 @@ for (let key in data) {
     btnEdit.textContent="Edit"
     btnEdit.title = "Edit";
     let id = data[key].id;
-    btnEdit.href = 'http://localhost:8080/'+id+'/profile?id='+id+'&action=edit';
+    btnEdit.href = 'http://localhost:8080/admin'+id+'/profile?id='+id+'&action=edit';
     btnEdit.classList.add("btn-sm")
     btnEdit.classList.add("btn-info")
     btnEdit.classList.add("edit-button")
-
+    // btnEdit.onclick = save();
 
     let btnDelete = document.createElement("a");
     btnDelete.textContent="Delete"
     btnDelete.title = "Delete";
     let idD = data[key].id;
-    btnDelete.href = 'http://localhost:8080/'+idD+'/profile?id='+idD+'&action=delete';
+    btnDelete.href = 'http://localhost:8080/admin/'+idD+'/profile?id='+idD+'&action=delete';
     btnDelete.classList.add("btn-sm")
     btnDelete.classList.add("btn-danger")
     btnDelete.classList.add("delete-button")
@@ -32,7 +33,7 @@ for (let key in data) {
                       <td>${data[key].lastname}</td>
                       <td>${data[key].username}</td>
                       <td>${data[key].email}</td>
-                      <td>${data[key].roles.map(role=>{return role.name})}</td>
+                      <td>${data[key].roles.map(role => role.name).join(', ')}</td>
                      `
     let tdEdit = document.createElement("td");
     tdEdit.appendChild(btnEdit);

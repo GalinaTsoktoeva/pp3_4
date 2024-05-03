@@ -16,19 +16,4 @@ public class Role {
     @Column(name = "roles")
     private String name;
 
-
-
-//    @Override
-//    public String getAuthority() {
-//        return name;
-//    }
-//    public Role(){};
-//    public Role(String name) {
-//        this.name = name;
-//    }
-
-//    @Override
-//    public String toString() {
-//        return name;
-//    }
 }

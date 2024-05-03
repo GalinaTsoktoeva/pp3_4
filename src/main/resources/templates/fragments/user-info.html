@@ -28,13 +28,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="border-top bg-light" th:object="${user}">
-                        <td th:text="${user.id}"></td>
-                        <td th:text="${user.firstname}"></td>
-                        <td th:text="${user.lastname}"></td>
+                    <tr class="border-top bg-light" th:object="${userAuth}">
+                        <td th:text="${userAuth.id}"></td>
+                        <td th:text="${userAuth.firstname}"></td>
+                        <td th:text="${userAuth.lastname}"></td>
 
-                        <td th:text="${user.email}"></td>
-                        <td><th:block th:each="role : ${user.roles}">
+                        <td th:text="${userAuth.email}"></td>
+                        <td><th:block th:each="role : ${userAuth.roles}">
                             &nbsp;<span th:text="${role.name}"/>
                         </th:block></td>
                     </tr>

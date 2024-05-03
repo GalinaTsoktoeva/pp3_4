@@ -1,7 +1,17 @@
 <header class="container-fluid d-flex flex-row align-items-center justify-content-between p-3 bg-dark text-white">
-<!--    <div><b sec:authentication="name"/> with roles:-->
-<!--        <th:block th:each="role : ${#authentication.authorities}">-->
-<!--            &nbsp;<span th:text="${role.getName()}"/>-->
-<!--        </th:block></div>-->
-<!--    <div><a class="text-light" th:href="@{/logout}">Logout</a></div>-->
+    <!--    <div th:text="${userAuth}"></div>-->
+    <div sec:authorize="isAuthenticated()" class="text-white">
+
+        <span th:text="${userAuth.email}"></span> with roles
+        <tr th:each="role : ${userAuth.roles}">
+            <td th:utext="${role.name}">name</td>
+        </tr>
+    </div>
+    <div>
+
+        <form th:action="@{/logout}" method="post">
+            <input class="btn bg-info" type="submit" value="Logout">
+        </form>
+
+    </div>
 </header>

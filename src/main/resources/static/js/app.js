@@ -3,7 +3,7 @@ if (close_btn) {
 
     close_btn.addEventListener("click", function () {
             document.getElementById("my-modal").classList.add("close")
-            document.location.href = '/user-list'
+            document.location.href = '/admin/user-list'
         }
     )
 }
@@ -13,7 +13,7 @@ let close_foot = document.getElementById("close-footer")
 if (close_foot) {
     close_foot.addEventListener("click", function () {
         document.getElementById("my-modal").classList.add("close")
-        document.location.href = '/user-list'
+        document.location.href = '/admin/user-list'
     })
 }
 
@@ -59,7 +59,7 @@ function saveUser() {
     // console.log(data1)
     const searchParams = JSON.stringify(data1);
 
-    fetch('http://localhost:8080/user-update', {
+    fetch('http://localhost:8080/admin/user-update', {
         method: 'PATCH',
         body: searchParams,
         headers: {
@@ -79,14 +79,14 @@ function saveUser() {
         .catch(error => {
             console.error('There was an error!', error);
         });
-    document.location.href = '/user-list'
+    document.location.href = '/admin/user-list'
 
 }
 
 function deleteUser() {
     let id = document.getElementById('id').value;
     console.log(id)
-    let url = 'http://localhost:8080/user-delete/' + id
+    let url = 'http://localhost:8080/admin/user-delete/' + id
     fetch(url, {
         method: 'DELETE',
 
@@ -104,7 +104,7 @@ function deleteUser() {
         .catch(error => {
             console.error('There was an error!', error);
         });
-    document.location.href = '/user-list'
+    document.location.href = '/admin/user-list'
 }
 
 

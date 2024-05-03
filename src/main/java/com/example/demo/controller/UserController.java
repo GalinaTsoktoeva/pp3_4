@@ -31,7 +31,7 @@ public class UserController {
         if (!model.containsAttribute("user")) {
             model.addAttribute("user", new User());
         }
-        model.addAttribute("userAuth",user);
+        model.addAttribute("userAuth",user.get());
 
         if (user.isEmpty()) System.out.println("User is null");
 
@@ -56,7 +56,7 @@ public class UserController {
     public String userInfo(@CurrentSecurityContext(expression = "authentication.principal") User principal, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findByUsername(auth.getName()).get();
-        model.addAttribute("user", user);
+        model.addAttribute("userAuth", user);
 //        model.addAttribute("allRoles", userService.findAllRoles());
         return "fragments/user-info";
     }

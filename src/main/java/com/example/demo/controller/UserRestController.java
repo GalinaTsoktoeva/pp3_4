@@ -42,12 +42,12 @@ public class UserRestController {
                 )).collect(Collectors.toList());
     }
 
-    @PostMapping("/user-create")
+    @PostMapping("/admin/user-create")
     public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto) throws Exception {
         return authService.createNewUser(registrationUserDto);
     }
 
-    @DeleteMapping("/user-delete/{id}")
+    @DeleteMapping("/admin/user-delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Long id) {
         try {
             if (!userService.existsById(id)) {
@@ -61,7 +61,7 @@ public class UserRestController {
         }
     }
 
-    @PatchMapping("/user-update")
+    @PatchMapping("/admin/user-update")
     public ResponseEntity<?> updateUser(@RequestBody UserDto user) {
         try {
             userService.updateUser(user);

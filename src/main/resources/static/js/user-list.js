@@ -10,7 +10,7 @@ for (let key in data) {
     btnEdit.textContent="Edit"
     btnEdit.title = "Edit";
     let id = data[key].id;
-    btnEdit.href = 'http://localhost:8080/admin'+id+'/profile?id='+id+'&action=edit';
+    btnEdit.href = 'http://localhost:8080/admin/'+id+'/profile?id='+id+'&action=edit';
     btnEdit.classList.add("btn-sm")
     btnEdit.classList.add("btn-info")
     btnEdit.classList.add("edit-button")

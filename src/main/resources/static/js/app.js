@@ -99,7 +99,7 @@ function deleteUser() {
             return response.json();
         })
         .then(data => {
-            console.log('Данные успешно удалены:', data1);
+            console.log('Данные успешно удалены:', id);
         })
         .catch(error => {
             console.error('There was an error!', error);

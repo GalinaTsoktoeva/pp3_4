@@ -1,9 +1,11 @@
 package com.example.demo.model;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.Objects;
 
 @Data
 @Entity
@@ -15,5 +17,18 @@ public class Role {
 
     @Column(name = "roles")
     private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(name, role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(name);
+    }
 
 }

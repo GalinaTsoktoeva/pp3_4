@@ -22,7 +22,7 @@ public class UserRestController {
     private final AuthService authService;
 
 
-    @GetMapping("/inf0")
+    @GetMapping("/info")
     public String infoData(Principal principal) {
         return principal.getName();
     }

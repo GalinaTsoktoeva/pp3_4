@@ -34,17 +34,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http ) throws Exception {
         http
-//                .cors(httpSecurityCorsConfigurer -> )
                 .cors().disable()
                 .csrf().disable()
                 .authorizeHttpRequests((requests) -> requests
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/user-list").authenticated()
                         .requestMatchers("/user-info").authenticated()
-//                                .requestMatchers("/admin/users").hasRole("ADMIN")
-//                                                        .requestMatchers("/admin").hasRole("ADMIN")
-//                        .requestMatchers("/users").permitAll()
-//                        .anyRequest().authenticated()
                                 .anyRequest().permitAll()
                         )
                 .formLogin((form) -> form
